@@ -190,3 +190,12 @@ section .contentBx .formBx .inputBx input a {
 .img-confacauca{
     height: 400px;
 }
+
+@media only screen and (max-width: 2000px) {
+
+    #form_login{
+        width: 500px !important;
+    }
+
+
+}
