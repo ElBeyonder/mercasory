@@ -1,0 +1,17 @@
+Options +FollowSymLinks
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+    RewriteCond %{ENV:HTTPS} !on [NC]
+    RewriteCond %{HTTP_HOST} ^mercasory\.com [OR]
+    RewriteCond %{HTTP_HOST} ^www\.mercasory\.com
+    RewriteRule ^(.*)$ https://mercasory.com/$1 [R=301,L,NE]
+
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.*)$ $1.php
+
+</IfModule>
