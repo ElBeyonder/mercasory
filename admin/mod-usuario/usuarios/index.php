@@ -26,6 +26,11 @@
 
 
    <div class="row center mt-10">
+       <div class="col s12">
+           <div class="center">
+               <h1>Usuarios</h1>
+           </div>
+       </div>
        <div class="col s12 z-depth-2 content-block-table">
            <div class="header-content-table">
                <div class="input-field">

@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    var url = 'infra/usuario.php';
+    let url = 'infra/evento.php';
 
 
     lista(1);
@@ -49,66 +49,60 @@ $(document).ready(function () {
         let formData = new FormData(this);
         formData.append('opcion',1);
 
-        let password = $('#password').val();
-        let confirm_password = $('#confirm_password').val();
+        Swal.fire({
+            title: '¿Esta Segur@ de agregar este item?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'SI',
+            cancelButtonText: 'NO',
+            focusConfirm:true,
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-        if (password !== confirm_password){
+                $.ajax({
+                    url:url,
+                    method:'post',
+                    dataType:'json',
+                    data:formData,
+                    cache:false,
+                    processData:false,
+                    contentType:false,
+                    beforeSend:function () {
 
-        }else{
-            Swal.fire({
-                title: '¿Esta Segur@ de agregar este usuario?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'SI',
-                cancelButtonText: 'NO',
-                focusConfirm:true,
-            }).then((result) => {
-                if (result.isConfirmed) {
+                    }
+                })
+                    .done(function (r) {
+                        switch (r) {
+                            case '':
+                                M.toast({html: 'Item agregado!'});
+                                $('#form_crear')[0].reset();
+                                break;
+                            case 'e':
 
-                    $.ajax({
-                        url:url,
-                        method:'post',
-                        dataType:'json',
-                        data:formData,
-                        cache:false,
-                        processData:false,
-                        contentType:false,
-                        beforeSend:function () {
-
+                                console.info(r);
+                                break;
+                            default:
+                                $.toast({
+                                    title: 'Proceso',
+                                    subtitle: 'Justo ahora',
+                                    content: 'Proceso terminado con posibles errores.',
+                                    type: 'warning',
+                                    delay: 3000
+                                });
+                                console.info(r);
                         }
                     })
-                        .done(function (r) {
-                            switch (r) {
-                                case '':
+                    .fail(function (f) {
+                        console.info(f);
+                    })
+                    .always(function (a) {
+                        lista(1);
+                    })
+            }
+        });
 
-                                    $('#form_crear')[0].reset();
-                                    break;
-                                case 'e':
-
-                                    console.info(r);
-                                    break;
-                                default:
-                                    $.toast({
-                                        title: 'Proceso',
-                                        subtitle: 'Justo ahora',
-                                        content: 'Proceso terminado con posibles errores.',
-                                        type: 'warning',
-                                        delay: 3000
-                                    });
-                                    console.info(r);
-                            }
-                        })
-                        .fail(function (f) {
-                            console.info(f);
-                        })
-                        .always(function (a) {
-                            lista(1);
-                        })
-                }
-            });
-        }
     }
     function editar(e) {
         e.preventDefault();
@@ -173,84 +167,6 @@ $(document).ready(function () {
             }
         });
     }
-    function change_password(e) {
-        e.preventDefault();
-
-        let formData = new FormData(this);
-        formData.append('opcion',6);
-
-        let password = $('#password2').val();
-        let confirm_password = $('#confirm_password_2').val();
-
-        if (password !== confirm_password){
-
-        }else if (password === confirm_password){
-            swal({
-                title: "¿Esta Segur@ de cambiar la contraseña del usuario?",
-                icon: "warning",
-                buttons: {
-                    cancel: 'NO',
-                    confirm:'SI',
-                },
-            })
-                .then((value) => {
-                    if (value) {
-
-                        $.ajax({
-                            url:url,
-                            method:'post',
-                            dataType:'json',
-                            data:formData,
-                            cache:false,
-                            processData:false,
-                            contentType:false,
-                            beforeSend:function () {
-
-                            }
-                        })
-                            .done(function (r) {
-                                switch (r) {
-                                    case 1:
-                                        console.info('error: ',r);
-                                        break;
-                                    case 2:
-                                        console.info('error: ',r);
-                                        break;
-                                    case 3:
-                                        console.info('error: ',r);
-                                        break;
-                                    case 4:
-                                        break;
-                                    case 0:
-                                        $('#form_edit_password')[0].reset();
-                                        break;
-                                    default:
-                                        console.info(r);
-                                }
-                            })
-                            .fail(function (f) {
-                                console.info(f);
-                            })
-                            .always(function (a) {
-                                lista(1);
-                            })
-                    }
-                });
-        }
-    }
-    function password_toggle() {
-
-        let input_id = $(this).attr('data-id-input');
-        let input = $('#'+input_id+'').attr('type');
-
-        if (input === 'password'){
-            $('#'+input_id+'').attr('type','text');
-            $(this).html('<i class="fad fa-eye-slash"></i>');
-        }else if (input === 'text'){
-            $('#'+input_id+'').attr('type','password');
-            $(this).html('<i class="fad fa-eye"></i>');
-        }
-    }
     function leer() {
 
         let id = $(this).val();
@@ -312,10 +228,9 @@ $(document).ready(function () {
     function eliminar() {
 
         let id = $(this).val();
-        let data_imagen = $(this).attr('data-imagen');
 
         Swal.fire({
-            title: '¿Esta Segur@ de eliminar este usuario?',
+            title: '¿Esta Segur@ de eliminar este item?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -392,12 +307,6 @@ $(document).ready(function () {
     $(document).on('submit', '#form_edit_item',editar);
     $(document).on('click', '.leer-item', leer);
     $(document).on('click', '.eliminar', eliminar);
-    $(document).on('click', '.password-toggle', password_toggle);
-    $(document).on('submit', '#form_edit_password', change_password);
-    $(document).on('click', '.change-password', function () {
-        let id_change = $(this).val();
-        $('#id_edit_password').val(id_change);
-    })
 
 });
 

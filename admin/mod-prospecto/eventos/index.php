@@ -28,11 +28,15 @@
    <div class="row center mt-10">
        <div class="col s12">
            <div class="center">
-               <h1>Prospectos</h1>
+               <h1>Eventos</h1>
            </div>
        </div>
        <div class="col s12 z-depth-2 content-block-table">
            <div class="header-content-table">
+               <div class="input-field mr-2">
+                   <input id="search" type="text" class="validate">
+                   <label for="search">Buscar...</label>
+               </div>
                <button data-target="modal_crear" class="left btn waves-effect waves-light modal-trigger" type="button">crear
                    <i class="material-icons right">add_box</i>
                </button>

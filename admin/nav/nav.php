@@ -4,6 +4,7 @@
         $content_nav = '
                     <li><a href="#!">Dashboard</a></li>
                     <li><a href="#!">Prospectos</a></li>
+                    <li><a href="'.$link_general.'admin/mod-prospecto/eventos/">Eventos</a></li>
                     <li><a href="'.$link_general.'admin/mod-usuario/usuarios/">Usuarios</a></li>
                     <li><a href="#!">Salir</a></li>
                     ';
