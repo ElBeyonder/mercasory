@@ -7,10 +7,10 @@
     if (isset($_SESSION['u_id'])){
         $id_usuario = $conn->real_escape_string($_SESSION['u_id']);
     }
+
     if (isset($_POST['id'])){
         $id = $conn->real_escape_string($_POST['id']);
     }
-
     if (isset($_POST['nombre'])){
         $nombre = $conn->real_escape_string($_POST['nombre']);
     }else{
@@ -45,7 +45,6 @@
             $conn->close();
             break; /* eliminar */
         case 3:
-            $output='';
             $sql = "SELECT * FROM `evento` WHERE id='".$id."' ";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
@@ -53,13 +52,12 @@
                     $output[]=$row;
                 }
             } else {
-                $output[]='';
+                $output='';
             }
             echo json_encode($output);
             $conn->close();
             break; /* LEER */
         case 4:
-            $output='';
             $sql = "UPDATE `evento` SET `nombre`='".$nombre."' WHERE id='".$id."' ";
             if ($conn->query($sql) === TRUE) {
                 $output='';
@@ -135,8 +133,8 @@
                                             <td class="text-center">
                                                 <div class="table-content-center">
                                                     <div class="btn-group">
-                                                        <button value="'.$row['id'].'" type="button" class="leer-item btn btn-sm btn-outline-success"><i class="fa fa-fw fa-pencil-alt"></i></button>
-                                                        <button value="'.$row['id'].'" type="button" class="eliminar btn btn-sm btn-outline-danger"><i class="fad fa-trash-alt"></i></button>
+                                                        <button value="'.$row['id'].'" type="button" data-target="modal_editar" class="leer-item btn btn-sm btn-outline-success modal-trigger"><i class="fa fa-fw fa-pencil-alt"></i></button>
+                                                        <button value="'.$row['id'].'" type="button" class="eliminar btn btn-sm red"><i class="fad fa-trash-alt"></i></button>
                                                     </div>
                                                 </div>
                                             </td>

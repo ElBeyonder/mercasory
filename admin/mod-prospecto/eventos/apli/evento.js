@@ -136,22 +136,10 @@ $(document).ready(function () {
                     .done((r)=>{
                         switch (r) {
                             case '':
-                                $.toast({
-                                    title: 'Editar',
-                                    subtitle: 'Justo ahora',
-                                    content: 'Usuario editado.',
-                                    type: 'success',
-                                    delay: 3000
-                                });
+                                console.info('Respuesta: ',r);
                                 break;
                             case 'e':
-                                $.toast({
-                                    title: 'Error',
-                                    subtitle: 'Justo ahora',
-                                    content: 'Hubo un error al intentar editar el usuario.',
-                                    type: 'success',
-                                    delay: 3000
-                                });
+                                console.info('Error: ',r);
                                 break;
                             default:
                                 console.info(r);
@@ -162,7 +150,6 @@ $(document).ready(function () {
                     })
                     .always((a)=> {
                         lista(1);
-
                     })
             }
         });
@@ -178,42 +165,10 @@ $(document).ready(function () {
                 opcion:3,
                 id:id
             },
-            beforeSend:()=>{
-
-            }
         })
             .done(function (r) {
-
-                let link_general= $('#link_general').val();
-
-                let imagen = link_general+'admin/modulo-usuario/usuario/dom/img/'+r[0].imagen;
-
-                $('#id_edit').val(r[0].id);
-                $('#data_imagen').val(r[0].imagen);
-                $('#primer_nombre').val(r[0].primer_nombre);
-                $('#segundo_nombre').val(r[0].segundo_nombre);
-                $('#apellidos').val(r[0].apellidos);
-                $('#usuario').val(r[0].usuario);
-                $('#correo').val(r[0].correo);
-                $('#celular').val(r[0].celular);
-                $('#acceso').val(r[0].acceso);
-                $('#tipo').val(r[0].tipo);
-                $('#direccion').val(r[0].direccion);
-
-                if (r[0].imagen === ''){
-                    $('#content-img').html('' +
-                        '<input type="file" class="dropify" name="imagen_perfil"' +
-                        '  data-max-file-size="3M">'+
-                        '');
-                }else{
-                    $('#content-img').html('' +
-                        '<input type="file" class="dropify" name="imagen_perfil"' +
-                        '  data-default-file="'+imagen+'"' +
-                        '  data-max-file-size="3M">'+
-                        '');
-                }
-
-
+                $('#id_evento_edit').val(r[0].id);
+                $('#nombre_edit').val(r[0].nombre);
             })
 
             .fail(function (f) {
@@ -222,7 +177,7 @@ $(document).ready(function () {
             })
 
             .always(function (a) {
-                init();
+                M.updateTextFields();
             })
     }
     function eliminar() {
@@ -279,7 +234,7 @@ $(document).ready(function () {
     }
 
     $(document).on('submit', '#form_crear', agregar);
-    $(document).on('submit', '#form_edit_item',editar);
+    $(document).on('submit', '#form_editar',editar);
     $(document).on('click', '.leer-item', leer);
     $(document).on('click', '.eliminar', eliminar);
 
