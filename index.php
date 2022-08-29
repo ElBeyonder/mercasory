@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    if (isset($_SESSION['login']) && $_SESSION['login'] === 'yes'){
+        header('location: '.$link_general.'admin/mod-usuario/usuarios/');
+    }else{
+
+    }
+?>
 <!doctype html>
 <html lang="es">
 <head>
@@ -5,7 +13,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login | Merca(Sory)</title>
+    <title>Login | Mercadeo</title>
 
     <link rel="stylesheet" href="login/dom/login.css">
 
@@ -64,54 +72,8 @@
         crossorigin="anonymous"></script>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="login/apli/login.js"></script>
 
 </body>
 </html>
 
-
-
-<!--
-<!DOCTYPE html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="login/dom/login.css">
-
-</head>
-<header>
-    <h2 class="logo">MERCADEO UNICOMFACAUCA</h2>
-
-</header>
-<body>
-    <section>
-        <div class="imgBx">
-            <img src="login/dom/img/fondo.JPG" alt="">
-
-        </div>
-        <div class="contentBx">
-            <div class="formBx">
-                <h2>Login</h2>
-                <form>
-                    <div class="inputBx">
-                        <span>Usuario</span>
-                        <input type="text" name="">
-                    </div>
-                    <div class="inputBx">
-                        <span>Contraseña</span>
-                        <input type="password" name="">
-                    </div>
-                    <div class="col-12 forgot">
-                        <a href="#">¿Olvidó su contraseña?</a>
-                    </div>
-                    <div class="inputBx">
-                        <input type="submit" name="" value="Iniciar sesión">
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-    </section>
-
-</body>-->

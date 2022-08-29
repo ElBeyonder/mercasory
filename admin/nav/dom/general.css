@@ -3,10 +3,44 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    padding-top: 100px;
 }
 
 main {
     flex: 1 0 auto;
 }
 
+.nav-bar-principal{
+    top: 0 !important;
+    height: 100px;
+    align-items: center !important;
+    position: fixed;
+    margin-bottom: 100px !important;
+
+}
+
+.menu-items{
+    height: 100% !important;
+    display: flex;
+    align-items: center;
+}
+
+.content-logo{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.brand-logo{
+    height: 100px !important;
+    min-height: 100% !important;
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.brand-logo img{
+    height: 100px;
+}
 
