@@ -2,7 +2,7 @@
     session_start();
     require_once '../../../../config.php';
     $opcion = $_POST['opcion'];
-    $tabla = 'evento';
+    $tabla = 'interesado';
 
 
     if (isset($_SESSION['u_id'])){
@@ -11,6 +11,7 @@
     if (isset($_POST['id'])){
         $id = $conn->real_escape_string($_POST['id']);
     }
+
     if (isset($_POST['nombres'])){
         $nombres = $conn->real_escape_string($_POST['nombres']);
     }else{
@@ -26,48 +27,65 @@
     }else{
         $celular1 = '';
     }
-    if (isset($_POST['celular2'])){
-        $celular2 = $conn->real_escape_string($_POST['celular2']);
-    }else{
-        $celular2 = '';
-    }
-    if (isset($_POST['programa_academico'])){
-        $programa_academico = $conn->real_escape_string($_POST['programa_academico']);
-    }else{
-        $programa_academico = '';
-    }
-    if (isset($_POST['evento'])){
-        $evento = $conn->real_escape_string($_POST['evento']);
-    }else{
-        $evento = '';
-    }
-    if (isset($_POST['fecha_evento'])){
-        $fecha_evento = $conn->real_escape_string($_POST['fecha_evento']);
-    }else{
-        $fecha_evento = '';
-    }
     if (isset($_POST['correo'])){
         $correo = $conn->real_escape_string($_POST['correo']);
     }else{
         $correo = '';
     }
-    if (isset($_POST['autorizo_envio_informacion'])){
-        $autorizo_envio_informacion = $conn->real_escape_string($_POST['autorizo_envio_informacion']);
+    if (isset($_POST['programa_interes'])){
+        $programa_interes = $conn->real_escape_string($_POST['programa_interes']);
     }else{
-        $autorizo_envio_informacion = '';
+        $programa_interes = '';
     }
-    if (isset($_POST['observacion'])){
-        $observacion = $conn->real_escape_string($_POST['observacion']);
+    if (isset($_POST['direccion'])){
+        $direccion = $conn->real_escape_string($_POST['direccion']);
     }else{
-        $observacion = '';
+        $direccion = '';
+    }
+    if (isset($_POST['asesor'])){
+        $asesor = $conn->real_escape_string($_POST['asesor']);
+    }else{
+        $asesor = '';
+    }
+    if (isset($_POST['fecha1'])){
+        $fecha1 = $conn->real_escape_string($_POST['fecha1']);
+    }else{
+        $fecha1 = '';
+    }
+    if (isset($_POST['1_contacto_seguimiento'])){
+        $contacto_seguimiento_1 = $conn->real_escape_string($_POST['1_contacto_seguimiento']);
+    }else{
+        $contacto_seguimiento_1 = '';
+    }
+    if (isset($_POST['fecha2'])){
+        $fecha2 = $conn->real_escape_string($_POST['fecha2']);
+    }else{
+        $fecha2 = '';
+    }
+    if (isset($_POST['2_contacto_seguimiento'])){
+        $contacto_seguimiento_2 = $conn->real_escape_string($_POST['2_contacto_seguimiento']);
+    }else{
+        $contacto_seguimiento_2 = '';
+    }
+    if (isset($_POST['fecha3'])){
+        $fecha3 = $conn->real_escape_string($_POST['fecha3']);
+    }else{
+        $fecha3 = '';
+    }
+    if (isset($_POST['3_contacto_seguimiento'])){
+        $contacto_seguimiento_3 = $conn->real_escape_string($_POST['3_contacto_seguimiento']);
+    }else{
+        $contacto_seguimiento_3 = '';
     }
 
 
     switch ($opcion){
         case 1:
             $output='';
-            $sql = "INSERT INTO `evento`(`nombres`, `apellidos`, `correo`, `celular1`, `celular2`, `programa_academico`, `evento`, `fecha_evento`, `observacion`, `autorizo_envio_informacion`) 
-                    VALUES ('".$nombres."','".$apellidos."','".$correo."', '".$celular1."','".$celular2."', '".$programa_academico."', '".$evento."', '".$fecha_evento."', '".$observacion."', '".$autorizo_envio_informacion."')";
+            $sql = "INSERT INTO `interesado`(`nombres`, `apellidos`, `celular`, `correo`, `programa_interes`, `direccion`, `asesor`, 
+                         `fecha1`, `contacto_seguimiento_1`, `fecha2`, `contacto_seguimiento_2`, `fecha3`, `contacto_seguimiento_3`) 
+                    VALUES ('".$nombres."', '".$apellidos."', '".$celular1."', '".$correo."', '".$programa_interes."', '".$direccion."', '".$asesor."',
+                     '".$fecha1."', '".$contacto_seguimiento_1."', '".$fecha2."', '".$contacto_seguimiento_2."','".$fecha3."', '".$contacto_seguimiento_3."')";
             if ($conn->query($sql) === TRUE) {
                 $output='';
             } else {
@@ -79,7 +97,7 @@
             break; /* AGREGAR */
         case 2:
 
-            $sql = "DELETE FROM evento WHERE id='".$id."' ";
+            $sql = "DELETE FROM ".$tabla." WHERE id='".$id."' ";
             if ($conn->query($sql) === TRUE) {
                 $output='';
             } else {
@@ -90,7 +108,7 @@
             break; /* ELIMINAR */
         case 3:
 
-            $sql = "SELECT * FROM evento WHERE id='".$id."' ";
+            $sql = "SELECT * FROM ".$tabla." WHERE id='".$id."' ";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
@@ -103,10 +121,10 @@
             $conn->close();
             break; /* LEER */
         case 4:
-            $sql = "UPDATE `evento` SET `nombres`='".$nombres."',`apellidos`='".$apellidos."',`correo`='".$correo."',`celular1`='".$celular1."',`celular2`='".$celular2."',
-                    `programa_academico`='".$programa_academico."',`evento`='".$evento."',`fecha_evento`=$fecha_evento,`observacion`='".$observacion."',
-                    `autorizo_envio_informacion`='".$autorizo_envio_informacion."'
-                    WHERE id='".$id."' ";
+            $sql = "UPDATE `interesado` SET `nombres`='".$nombres."',`apellidos`='".$apellidos."',`celular`='".$celular1."',`correo`='".$correo."',`programa_interes`='".$programa_interes."',
+                        `direccion`='".$direccion."', `asesor`='".$asesor."', `fecha1`='".$fecha1."', `contacto_seguimiento_1`='".$contacto_seguimiento_1."',
+                         `fecha2`='".$fecha2."', `contacto_seguimiento_2`='".$contacto_seguimiento_2."', `fecha3`='".$fecha3."', `contacto_seguimiento_3`='".$contacto_seguimiento_3."'
+                    WHERE  id='".$id."' ";
             if ($conn->query($sql) === TRUE) {
                 $output='';
             } else {
@@ -140,7 +158,7 @@
                 $query.=' 
                         WHERE ('.$tabla.'.nombres LIKE "%'.str_replace(' ', '%', $search).'%"
                         OR '.$tabla.'.apellidos LIKE "%'.str_replace(' ', '%', $search).'%"
-                        OR '.$tabla.'.programa_academico LIKE "%'.str_replace(' ', '%', $search).'%")
+                        OR '.$tabla.'.programa_interes LIKE "%'.str_replace(' ', '%', $search).'%")
                         ';
             }
 
@@ -153,16 +171,16 @@
             $statement->execute();
             $result = $statement->fetchAll();
             $total_filter_data = $statement->rowCount();
-            $output = '<div class="col-12 col-sm-12"><label class="label label-primary">Item(s): '.$total_data.'</label></div>';
+            $output = '<div class="col s12 text-left" style="margin-top: 1rem;"><span class="badge left left-align">Item(s): '.$total_data.'</span></div>';
             $output.= '<table class="table table-scrollable table-striped table-hover">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th class="text-center" style="width: 50px;">N°</th>
                                         <th class="text-center">Nombre</th>
                                         <th class="text-center">Correo</th>
-                                        <th class="text-center">programa academico</th>
-                                        <th class="text-center">Evento</th>
-                                        <th class="text-center">Fecha evento</th>
+                                        <th class="text-center">Celular</th>
+                                        <th class="text-center">Direccion</th>
+                                        <th class="text-center">programa interes</th>
                                         <th class="text-center">Opciones</th>
                                     </tr>
                                 </thead>
@@ -176,9 +194,9 @@
                                             <td class="text-center" style="width: 50px;">'.$row['id'].'</td>
                                             <td class="text-left">'.$row['nombres'].' '.$row['apellidos'].'</td>
                                             <td class="text-left">'.$row['correo'].'</td>
-                                            <td class="text-left">'.$row['programa_academico'].'</td>
-                                            <td class="text-left">'.$row['evento'].'</td>
-                                            <td class="text-left">'.$row['fecha_evento'].'</td>
+                                            <td class="text-left">'.$row['celular'].'</td>
+                                            <td class="text-left">'.$row['direccion'].'</td>
+                                            <td class="text-left">'.$row['programa_interes'].'</td>
                                             <td class="text-center">
                                                 <div class="table-content-center">
                                                     <div class="btn-group">
@@ -204,10 +222,9 @@
         case 6:
 
             header('Content-type:application/xls');
-            header('Content-Disposition: attachment; filename=LISTA EVENTOS.xls');
+            header('Content-Disposition: attachment; filename=LISTA INTERESADOS.xls');
 
             /* variables */
-            $limit = 5;
             $order = 'DESC';
             if (isset($_POST['search'])){
                 $search = $conn->real_escape_string($_POST['search']);
@@ -222,7 +239,7 @@
                 $query.=' 
                         WHERE ('.$tabla.'.nombres LIKE "%'.str_replace(' ', '%', $search).'%"
                         OR '.$tabla.'.apellidos LIKE "%'.str_replace(' ', '%', $search).'%"
-                        OR '.$tabla.'.programa_academico LIKE "%'.str_replace(' ', '%', $search).'%")
+                        OR '.$tabla.'.programa_interes LIKE "%'.str_replace(' ', '%', $search).'%")
                         ';
             }
 
@@ -232,20 +249,23 @@
             $total_data = $statement->rowCount();
             $result = $statement->fetchAll();
             $total_filter_data = $statement->rowCount();
-            $output = '<div class="col-12 col-sm-12"><label class="label label-primary">Item(s): '.$total_data.'</label></div>';
+            $output = '<div class="col s12 text-left" style="margin-top: 1rem;"><span class="badge left left-align">Item(s): '.$total_data.'</span></div>';
             $output.= '<table class="table table-scrollable table-striped table-hover">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th class="text-center" style="width: 50px;">N°</th>
                                         <th class="text-center">Nombre</th>
                                         <th class="text-center">Correo</th>
-                                        <th class="text-center">celular 1</th>
-                                        <th class="text-center">celular 2</th>
-                                        <th class="text-center">programa academico</th>
-                                        <th class="text-center">Evento</th>
-                                        <th class="text-center">Fecha evento</th>
-                                        <th class="text-center">Autorizo envio informacion</th>
-                                        <th class="text-center">observacion</th>
+                                        <th class="text-center">Celular</th>
+                                        <th class="text-center">Direccion</th>
+                                        <th class="text-center">programa interes</th>
+                                        <th class="text-center">Asesor</th>
+                                        <th class="text-center">Fecha 1</th>
+                                        <th class="text-center">1 Seguimiento</th>
+                                        <th class="text-center">Fecha 2</th>
+                                        <th class="text-center">2 Seguimiento</th>
+                                        <th class="text-center">Fecha 3</th>
+                                        <th class="text-center">3 Seguimiento</th>
                                         <th class="text-center">Fecha creacion</th>
                                     </tr>
                                 </thead>
@@ -259,23 +279,23 @@
                                             <td class="text-center" style="width: 50px;">'.$row['id'].'</td>
                                             <td class="text-left">'.$row['nombres'].' '.$row['apellidos'].'</td>
                                             <td class="text-left">'.$row['correo'].'</td>
-                                            <td class="text-left">'.$row['celular1'].'</td>
-                                            <td class="text-left">'.$row['celular2'].'</td>
-                                            <td class="text-left">'.$row['programa_academico'].'</td>
-                                            <td class="text-left">'.$row['evento'].'</td>
-                                            <td class="text-left">'.$row['fecha_evento'].'</td>
-                                            <td class="text-left">'.$row['autorizo_envio_informacion'].'</td>
-                                            <td class="text-left">'.$row['observacion'].'</td>
-                                            <td class="text-center">
-                                                '.$row['fecha_creacion'].'
-                                            </td>
+                                            <td class="text-left">'.$row['celular'].'</td>
+                                            <td class="text-left">'.$row['direccion'].'</td>
+                                            <td class="text-left">'.$row['programa_interes'].'</td>
+                                            <td class="text-left">'.$row['asesor'].'</td>
+                                            <td class="text-left">'.$row['fecha1'].'</td>
+                                            <td class="text-left">'.$row['contacto_seguimiento_1'].'</td>
+                                            <td class="text-left">'.$row['fecha2'].'</td>
+                                            <td class="text-left">'.$row['contacto_seguimiento_2'].'</td>
+                                            <td class="text-left">'.$row['fecha3'].'</td>
+                                            <td class="text-left">'.$row['contacto_seguimiento_3'].'</td>
+                                            <td class="text-center">'.$row['fecha_creacion'].'</td>
                                       </tr>
                                      ';
                 }
             } else {
                 $output.='<tr><td colspan="100%" class="text-sm-center">Sin resultados</td></tr>';
             }
-
 
             echo utf8_decode($output);
             break; /* EXPORTAR EXCEL */

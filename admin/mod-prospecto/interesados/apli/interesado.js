@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    var url = 'infra/evento.php';
+    var url = 'infra/interesado.php';
 
 
     lista(1);
@@ -152,71 +152,6 @@ $(document).ready(function () {
             }
         });
     }
-    function change_password(e) {
-        e.preventDefault();
-
-        let formData = new FormData(this);
-        formData.append('opcion',6);
-
-        let password = $('#password2').val();
-        let confirm_password = $('#confirm_password_2').val();
-
-        if (password !== confirm_password){
-
-        }else if (password === confirm_password){
-            swal({
-                title: "¿Esta Segur@ de cambiar la contraseña del usuario?",
-                icon: "warning",
-                buttons: {
-                    cancel: 'NO',
-                    confirm:'SI',
-                },
-            })
-                .then((value) => {
-                    if (value) {
-
-                        $.ajax({
-                            url:url,
-                            method:'post',
-                            dataType:'json',
-                            data:formData,
-                            cache:false,
-                            processData:false,
-                            contentType:false,
-                            beforeSend:function () {
-
-                            }
-                        })
-                            .done(function (r) {
-                                switch (r) {
-                                    case 1:
-                                        console.info('error: ',r);
-                                        break;
-                                    case 2:
-                                        console.info('error: ',r);
-                                        break;
-                                    case 3:
-                                        console.info('error: ',r);
-                                        break;
-                                    case 4:
-                                        break;
-                                    case 0:
-                                        $('#form_edit_password')[0].reset();
-                                        break;
-                                    default:
-                                        console.info(r);
-                                }
-                            })
-                            .fail(function (f) {
-                                console.info(f);
-                            })
-                            .always(function (a) {
-                                lista(1);
-                            })
-                    }
-                });
-        }
-    }
     function leer() {
 
         let id = $(this).val();
@@ -233,17 +168,21 @@ $(document).ready(function () {
 
                 let link_general= $('#link_general').val();
 
-                $('#id_evento_editar').val(r[0].id);
+                $('#id_editar_interesado').val(r[0].id);
                 $('#nombres_editar').val(r[0].nombres);
                 $('#apellidos_editar').val(r[0].apellidos);
                 $('#correo_editar').val(r[0].correo);
-                $('#celular1_editar').val(r[0].celular1);
-                $('#celular2_editar').val(r[0].celular2);
-                $('#programa_academico_editar').val(r[0].programa_academico);
-                $('#evento_editar').val(r[0].evento);
-                $('#fecha_evento_editar').val(r[0].fecha_evento);
-                $('#observacion_editar').val(r[0].observacion);
-                $('#autorizo_envio_informacion_editar').val(r[0].autorizo_envio_informacion);
+                $('#celular1_editar').val(r[0].celular);
+                $('#programa_interes_editar').val(r[0].programa_interes);
+                $('#direccion_editar').val(r[0].direccion);
+                $('#asesor_editar').val(r[0].asesor);
+                $('#fecha1_editar').val(r[0].fecha1);
+                $('#1_contacto_seguimiento_editar').val(r[0].contacto_seguimiento_1);
+                $('#fecha2_editar').val(r[0].fecha2);
+                $('#2_contacto_seguimiento_editar').val(r[0].contacto_seguimiento_2);
+                $('#fecha3_editar').val(r[0].fecha3);
+                $('#3_contacto_seguimiento_editar').val(r[0].contacto_seguimiento_3);
+
 
             })
 
@@ -253,7 +192,6 @@ $(document).ready(function () {
 
             .always(function (a) {
                 M.updateTextFields();
-                M.textareaAutoResize($('#observacion_editar'));
             })
     }
     function eliminar() {
@@ -343,7 +281,7 @@ $(document).ready(function () {
                         let a = document.createElement('a');
                         let url = window.URL.createObjectURL(r);
                         a.href = url;
-                        a.download = 'LISTA EVENTOS.xls';
+                        a.download = 'LISTA INTERESADOS.xls';
                         document.body.append(a);
                         a.click();
                         a.remove();
@@ -368,7 +306,7 @@ $(document).ready(function () {
     $(document).on('click', '.leer-item', leer);
     $(document).on('click', '.eliminar', eliminar);
     $(document).on('click', '#exportar_excel', exportar_excel);
-    $(document).on('submit', '#form_edit_password', change_password);
+
 
 });
 
