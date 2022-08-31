@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ae67f1f3-417e-4a32-9191-8cb01e9a24ab" name="local" url="http://localhost/mercasory/">
+        <fileTransfer mountedRoot="C:\xampp\htdocs\mercasory" accessType="MOUNT" port="0" />
+      </webServer>
+      <webServer id="f93734c5-e975-4ac9-8112-0edfb3d25cd2" name="mercadeo" url="https://mercadeo.jeloda.com/">
+        <fileTransfer rootFolder="/public_html/mercadeo" host="ftp.jeloda.com" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

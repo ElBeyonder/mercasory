@@ -9,6 +9,7 @@ $(document).ready(function () {
         let search = $('#search').val();
         let limite = $('#limite').val();
         let orden = $('#orden').val();
+        let tipo = $('#tipo_lista').val();
 
         $.ajax({
             url:url,
@@ -19,6 +20,7 @@ $(document).ready(function () {
                 limit:limite,
                 order:orden,
                 search:search,
+                tipo:tipo,
 
             }
         })

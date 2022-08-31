@@ -4,13 +4,13 @@
     $opcion = $_POST['opcion'];
     $tabla = 'usuario';
 
+
     if (isset($_SESSION['u_id'])){
         $id_usuario = $conn->real_escape_string($_SESSION['u_id']);
     }
     if (isset($_POST['id'])){
         $id = $conn->real_escape_string($_POST['id']);
     }
-
     if (isset($_POST['nombre_completo'])){
         $nombre_completo = $conn->real_escape_string($_POST['nombre_completo']);
     }else{
@@ -34,27 +34,6 @@
     }
 
 
-    $ruta_carpeta = "../dom/img/";
-    if (isset($_FILES["imagen_perfil"])) {
-        if (empty($_FILES["imagen_perfil"]["name"])){
-            $imagen='';
-        }else{
-            $ruta_carpeta = "../dom/img/";
-            $rand=rand();
-            $date=date('YmdHis');
-            $imagen = "avatar-".$rand."-".$date."." . pathinfo($_FILES["imagen_perfil"]["name"], PATHINFO_EXTENSION);
-            $final=$ruta_carpeta.$imagen;
-            move_uploaded_file($_FILES["imagen_perfil"]["tmp_name"], $final);
-        }
-    }else{
-        $imagen='';
-    }
-
-    if (isset($_POST['data_imagen'])){
-        $data_imagen = $conn->real_escape_string($_POST['data_imagen']);
-    }
-
-
     switch ($opcion){
         case 1:
             $output='';
@@ -70,41 +49,40 @@
             $conn->close();
             break; /* AGREGAR */
         case 2:
-            if (!empty($data_imagen)){
-                unlink($ruta_carpeta.$data_imagen);
-            }
-            eliminar_item($conn, $tabla, 'id', $id);
-            break; /* eliminar */
-        case 3:
 
-            $columnas= array('*');
-            leer_item($conn, $columnas, $tabla, 'id', $id);
-            break; /* LEER */
-        case 4:
-            if (empty($imagen)){
-                $sql=("UPDATE `usuario` 
-                    SET `usuario`='".$usuario."',`primer_nombre`='".$primer_nombre."',`segundo_nombre`='".$segundo_nombre."',
-                    `apellidos`='".$apellidos."', `correo`='".$correo."', 
-                    `tipo`='".$tipo."', `celular`='".$celular."', `acceso`='".$acceso."'
-                    WHERE id='".$id."' ");
-            }else{
-                unlink($ruta_carpeta.$data_imagen);
-                $sql=("UPDATE `usuario` 
-                    SET `usuario`='".$usuario."',`primer_nombre`='".$primer_nombre."',`segundo_nombre`='".$segundo_nombre."',
-                    `apellidos`='".$apellidos."', `imagen`='".$imagen."',`correo`='".$correo."', 
-                    `tipo`='".$tipo."', `celular`='".$celular."', `acceso`='".$acceso."'
-                    WHERE id='".$id."' ");
-            }
+            $sql = "DELETE FROM usuario WHERE id='".$id."' ";
             if ($conn->query($sql) === TRUE) {
                 $output='';
             } else {
-                $output='e';
-                $output.="Error updating record: " . $conn->error;
+                $output="Error deleting record: " . $conn->error;
             }
             echo json_encode($output);
             $conn->close();
+            break; /* ELIMINAR */
+        case 3:
 
-            break; /* actualizar */
+            $sql = "SELECT * FROM usuario WHERE id='".$id."' ";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $output[]=$row;
+                }
+            } else {
+                $output[]='';
+            }
+            echo json_encode($output);
+            $conn->close();
+            break; /* LEER */
+        case 4:
+            $sql = "UPDATE usuario SET nombre_completo='".$nombre_completo."', usuario='".$usuario."', correo='".$correo."' WHERE id='".$id."' ";
+            if ($conn->query($sql) === TRUE) {
+                $output='';
+            } else {
+                $output="Error al actualizar el usuario: " . $conn->error;
+            }
+            echo json_encode($output);
+            $conn->close();
+            break; /* ACTUALIZAR */
         case 5:
 
             /* variables */
@@ -136,7 +114,6 @@
                         OR '.$tabla.'.correo LIKE "%'.str_replace(' ', '%', $search).'%")
                         ';
             }
-
 
             $query.=" ORDER BY ".$tabla.".id  ".$order." ";
             $filter_query=$query.'LIMIT '.$start.', '.$limit.'';
@@ -172,9 +149,9 @@
                                             <td class="text-center">
                                                 <div class="table-content-center">
                                                     <div class="btn-group">
-                                                        <button value="'.$row['id'].'" type="button" class="leer-item btn btn-sm btn-outline-success"><i class="fa fa-fw fa-pencil-alt"></i></button>
-                                                        <button value="'.$row['id'].'" type="button" data-toggle="modal" class="change-password btn btn-sm btn-outline-warning"><i class="fad fa-unlock-alt"></i></button>
-                                                        <button value="'.$row['id'].'" type="button" class="eliminar btn btn-sm btn-outline-danger"><i class="fad fa-trash-alt"></i></button>
+                                                        <button value="'.$row['id'].'" type="button" data-target="modal_editar" class="leer-item btn green modal-trigger"><i class="fa fa-fw fa-pencil-alt"></i></button>
+                                                        <button value="'.$row['id'].'" type="button" class="change-password btn lime"><i class="fad fa-unlock-alt"></i></button>
+                                                        <button value="'.$row['id'].'" type="button" class="eliminar btn red"><i class="fad fa-trash-alt"></i></button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -218,20 +195,75 @@
             }
             echo json_encode($output);
             $conn->close();
-            break; /* cambiar contraseña */
+            break; /* CAMBIAR CONTRASEÑA */
         case 7:
-            $sql=("SELECT distinct tipo  FROM usuario ");
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    $output[]=$row;
+
+            header('Content-type:application/xls');
+            header('Content-Disposition: attachment; filename=LISTA USUARIOS.xls');
+
+            /* variables */
+            $limit = 5;
+            $order = 'DESC';
+            if (isset($_POST['search'])){
+                $search = $conn->real_escape_string($_POST['search']);
+            }else{
+                $search ='';
+            }
+            if (isset($_POST['tipo'])){
+                $tipo = $conn->real_escape_string($_POST['tipo']);
+            }
+            /* variables (fin) */
+
+
+            $query="SELECT  * FROM ".$tabla."  ";
+            if (!empty($search)){
+                $query.=' 
+                        WHERE ('.$tabla.'.nombre_completo LIKE "%'.str_replace(' ', '%', $search).'%"
+                        OR '.$tabla.'.usuario LIKE "%'.str_replace(' ', '%', $search).'%"
+                        OR '.$tabla.'.correo LIKE "%'.str_replace(' ', '%', $search).'%")
+                        ';
+            }
+
+            $query.=" ORDER BY ".$tabla.".id  ".$order." ";
+            $statement = $connect->prepare($query);
+            $statement->execute();
+            $total_data = $statement->rowCount();
+            $result = $statement->fetchAll();
+            $total_filter_data = $statement->rowCount();
+            $output = '<div class="col s12"><label class="badge ">Item(s): '.$total_data.'</label></div>';
+            $output.= '<table class="table" >
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center" style="width: 50px;">N°</th>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Usuario</th>
+                                        <th class="text-center">correo</th>
+                                        <th class="text-center">Fecha creacion</th>
+                                    </tr>
+                                </thead>
+                            <tbody>';
+
+
+            if ($total_data > 0) {
+                foreach ($result as $row) {
+
+                    $output.='<tr>
+                                            <td class="text-center" style="width: 50px;"><div class="table-content-center"><span>'.$row['id'].'</span></div></td>
+                                            <td class="text-left justify-content-center font-w600 font-size-sm"><div class="table-content-center">'.$row['nombre_completo'].'</div></td>
+                                            <td class="text-center font-w600 font-size-sm"><div class="table-content-center">'.$row['usuario'].'</div></td>
+                                            <td class="text-left font-w600 font-size-sm"><div class="table-content-center">'.$row['correo'].'</div></td>
+                                            <td class="text-center">
+                                               '.$row['fecha_creacion'].'
+                                            </td>
+                                      </tr>
+                                     ';
                 }
             } else {
-                $output='';
+                $output.='<tr><td colspan="100%" class="text-sm-center">Sin resultados</td></tr>';
             }
-            echo json_encode($output);
-            $conn->close();
-            break; /* tipos de usuario */
+
+            echo utf8_decode($output);
+            break; /* EXPORTAR EXCEL */
         default:
             echo json_encode('No hay accion');
     }

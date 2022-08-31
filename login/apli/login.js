@@ -38,6 +38,8 @@ $(document).ready(function () {
                 console.info('Error: ',r);
             })
             .always(r=>{
+                let link_general = $('#link_general').val();
+                window.location.href = link_general+'/admin/mod-usuario/usuarios/';
                 M.toast({html:'!!!'});
             })
     }
