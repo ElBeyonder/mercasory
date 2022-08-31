@@ -2,7 +2,7 @@
     session_start();
     require_once '../../../../config.php';
     $opcion = $_POST['opcion'];
-    $tabla = 'evento';
+    $tabla = 'Inscrito';
 
 
     if (isset($_SESSION['u_id'])){
@@ -21,6 +21,16 @@
     }else{
         $apellidos = '';
     }
+    if (isset($_POST['programa_interes'])){
+        $programa_interes = $conn->real_escape_string($_POST['programa_interes']);
+    }else{
+        $programa_interes = '';
+    }
+    if (isset($_POST['identificacion'])){
+        $identificacion = $conn->real_escape_string($_POST['identificacion']);
+    }else{
+        $identificacion = '';
+    }
     if (isset($_POST['celular1'])){
         $celular1 = $conn->real_escape_string($_POST['celular1']);
     }else{
@@ -31,30 +41,75 @@
     }else{
         $celular2 = '';
     }
-    if (isset($_POST['programa_academico'])){
-        $programa_academico = $conn->real_escape_string($_POST['programa_academico']);
+    if (isset($_POST['fecha_entevista'])){
+        $fecha_entevista = $conn->real_escape_string($_POST['fecha_entevista']);
     }else{
-        $programa_academico = '';
+        $fecha_entevista = '';
     }
-    if (isset($_POST['evento'])){
-        $evento = $conn->real_escape_string($_POST['evento']);
+    if (isset($_POST['direccion'])){
+        $direccion = $conn->real_escape_string($_POST['direccion']);
     }else{
-        $evento = '';
+        $direccion = '';
     }
-    if (isset($_POST['fecha_evento'])){
-        $fecha_evento = $conn->real_escape_string($_POST['fecha_evento']);
+    if (isset($_POST['municipio'])){
+        $municipio = $conn->real_escape_string($_POST['municipio']);
     }else{
-        $fecha_evento = '';
+        $municipio = '';
+    }
+    if (isset($_POST['estado'])){
+        $estado = $conn->real_escape_string($_POST['estado']);
+    }else{
+        $estado = '';
     }
     if (isset($_POST['correo'])){
         $correo = $conn->real_escape_string($_POST['correo']);
     }else{
         $correo = '';
     }
-    if (isset($_POST['autorizo_envio_informacion'])){
-        $autorizo_envio_informacion = $conn->real_escape_string($_POST['autorizo_envio_informacion']);
+    if (isset($_POST['pago_inscrito'])){
+        $pago_inscrito = $conn->real_escape_string($_POST['pago_inscrito']);
     }else{
-        $autorizo_envio_informacion = '';
+        $pago_inscrito = '';
+    }
+    if (isset($_POST['estado_documento'])){
+        $estado_documento = $conn->real_escape_string($_POST['estado_documento']);
+    }else{
+        $estado_documento = '';
+    }
+    if (isset($_POST['postula_comfabeca'])){
+        $postula_comfabeca = $conn->real_escape_string($_POST['postula_comfabeca']);
+    }else{
+        $postula_comfabeca = '';
+    }
+    if (isset($_POST['fecha_envio_comfabeca'])){
+        $fecha_envio_comfabeca = $conn->real_escape_string($_POST['fecha_envio_comfabeca']);
+    }else{
+        $fecha_envio_comfabeca = '';
+    }
+    if (isset($_POST['modalidad_pago'])){
+        $modalidad_pago = $conn->real_escape_string($_POST['modalidad_pago']);
+    }else{
+        $modalidad_pago = '';
+    }
+    if (isset($_POST['matricula_financiera'])){
+        $matricula_financiera = $conn->real_escape_string($_POST['matricula_financiera']);
+    }else{
+        $matricula_financiera = '';
+    }
+    if (isset($_POST['matricula_academica'])){
+        $matricula_academica = $conn->real_escape_string($_POST['matricula_academica']);
+    }else{
+        $matricula_academica = '';
+    }
+    if (isset($_POST['convenio'])){
+        $convenio = $conn->real_escape_string($_POST['convenio']);
+    }else{
+        $convenio = '';
+    }
+    if (isset($_POST['como_entero'])){
+        $como_entero = $conn->real_escape_string($_POST['como_entero']);
+    }else{
+        $como_entero = '';
     }
     if (isset($_POST['observacion'])){
         $observacion = $conn->real_escape_string($_POST['observacion']);
@@ -66,8 +121,12 @@
     switch ($opcion){
         case 1:
             $output='';
-            $sql = "INSERT INTO `evento`(`nombres`, `apellidos`, `correo`, `celular1`, `celular2`, `programa_academico`, `evento`, `fecha_evento`, `observacion`, `autorizo_envio_informacion`) 
-                    VALUES ('".$nombres."','".$apellidos."','".$correo."', '".$celular1."','".$celular2."', '".$programa_academico."', '".$evento."', '".$fecha_evento."', '".$observacion."', '".$autorizo_envio_informacion."')";
+            $sql = " INSERT INTO `inscrito`(`nombres`, `apellidos`, `programa_interes`, `identificacion`, `celular1`, `celular2`, `fecha_entrevista`, `direccion`,
+                        `municipio`, `estado`, `correo`, `pago_inscrito`, `estado_documento`, `postula_comfabeca`, `fecha_envio_comfabeca`, 
+                        `modalidad_pago`, `matricula_financiera`, `matricula_academica`, `convenio`, `como_entero`, `observacion`) 
+                    VALUES ('".$nombres."', '".$apellidos."', '".$programa_interes."', '".$identificacion."', '".$celular1."', '".$celular2."', '".$fecha_entevista."', '".$direccion."',
+                    '".$municipio."', '".$estado."', '".$correo."', '".$pago_inscrito."', '".$estado_documento."', '".$postula_comfabeca."', '".$fecha_envio_comfabeca."',
+                    '".$modalidad_pago."', '".$matricula_financiera."', '".$matricula_academica."', '".$convenio."', '".$como_entero."', '".$observacion."') ";
             if ($conn->query($sql) === TRUE) {
                 $output='';
             } else {
@@ -79,7 +138,7 @@
             break; /* AGREGAR */
         case 2:
 
-            $sql = "DELETE FROM evento WHERE id='".$id."' ";
+            $sql = "DELETE FROM ".$tabla." WHERE id='".$id."' ";
             if ($conn->query($sql) === TRUE) {
                 $output='';
             } else {
@@ -90,7 +149,7 @@
             break; /* ELIMINAR */
         case 3:
 
-            $sql = "SELECT * FROM evento WHERE id='".$id."' ";
+            $sql = "SELECT * FROM ".$tabla." WHERE id='".$id."' ";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
@@ -103,9 +162,11 @@
             $conn->close();
             break; /* LEER */
         case 4:
-            $sql = "UPDATE `evento` SET `nombres`='".$nombres."',`apellidos`='".$apellidos."',`correo`='".$correo."',`celular1`='".$celular1."',`celular2`='".$celular2."',
-                    `programa_academico`='".$programa_academico."',`evento`='".$evento."',`fecha_evento`=$fecha_evento,`observacion`='".$observacion."',
-                    `autorizo_envio_informacion`='".$autorizo_envio_informacion."'
+            $sql = "UPDATE `inscrito` SET `nombres`='".$nombres."',`apellidos`='".$apellidos."',`programa_interes`='".$programa_interes."',`identificacion`='".$identificacion."',`celular1`='".$celular1."',
+                      `celular2`='".$celular2."',`fecha_entrevista`='".$fecha_entevista."',`direccion`='".$direccion."',`municipio`='".$municipio."',`estado`='".$estado."',
+                      `correo`='".$correo."',`pago_inscrito`='".$pago_inscrito."',`estado_documento`='".$estado_documento."',`postula_comfabeca`='".$postula_comfabeca."',
+                      `fecha_envio_comfabeca`='".$fecha_envio_comfabeca."', `modalidad_pago`='".$modalidad_pago."',`matricula_financiera`='".$matricula_financiera."',`matricula_academica`='".$matricula_academica."',
+                      `convenio`='".$convenio."',`como_entero`='".$como_entero."',`observacion`='".$observacion."'
                     WHERE id='".$id."' ";
             if ($conn->query($sql) === TRUE) {
                 $output='';
@@ -140,8 +201,7 @@
                 $query.=' 
                         WHERE ('.$tabla.'.nombres LIKE "%'.str_replace(' ', '%', $search).'%"
                         OR '.$tabla.'.apellidos LIKE "%'.str_replace(' ', '%', $search).'%"
-                        OR '.$tabla.'.evento LIKE "%'.str_replace(' ', '%', $search).'%"
-                        OR '.$tabla.'.programa_academico LIKE "%'.str_replace(' ', '%', $search).'%")
+                        OR '.$tabla.'.programa_interes LIKE "%'.str_replace(' ', '%', $search).'%")
                         ';
             }
 
@@ -154,16 +214,16 @@
             $statement->execute();
             $result = $statement->fetchAll();
             $total_filter_data = $statement->rowCount();
-            $output = '<div class="col-12 col-sm-12"><label class="label label-primary">Item(s): '.$total_data.'</label></div>';
+            $output = '<div class="col s12 text-left" style="margin-top: 1rem;"><span class="badge left left-align">Item(s): '.$total_data.'</span></div>';
             $output.= '<table class="table table-scrollable table-striped table-hover">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th class="text-center" style="width: 50px;">N°</th>
                                         <th class="text-center">Nombre</th>
                                         <th class="text-center">Correo</th>
-                                        <th class="text-center">programa academico</th>
-                                        <th class="text-center">Evento</th>
-                                        <th class="text-center">Fecha evento</th>
+                                        <th class="text-center">Celular</th>
+                                        <th class="text-center">Direccion</th>
+                                        <th class="text-center">programa interes</th>
                                         <th class="text-center">Opciones</th>
                                     </tr>
                                 </thead>
@@ -177,9 +237,9 @@
                                             <td class="text-center" style="width: 50px;">'.$row['id'].'</td>
                                             <td class="text-left">'.$row['nombres'].' '.$row['apellidos'].'</td>
                                             <td class="text-left">'.$row['correo'].'</td>
-                                            <td class="text-left">'.$row['programa_academico'].'</td>
-                                            <td class="text-left">'.$row['evento'].'</td>
-                                            <td class="text-left">'.$row['fecha_evento'].'</td>
+                                            <td class="text-left">'.$row['celular1'].'</td>
+                                            <td class="text-left">'.$row['direccion'].'</td>
+                                            <td class="text-left">'.$row['programa_interes'].'</td>
                                             <td class="text-center">
                                                 <div class="table-content-center">
                                                     <div class="btn-group">
@@ -205,7 +265,7 @@
         case 6:
 
             header('Content-type:application/xls');
-            header('Content-Disposition: attachment; filename=LISTA EVENTOS.xls');
+            header('Content-Disposition: attachment; filename=LISTA INSCRITOS.xls');
 
             /* variables */
             $limit = 5;
@@ -223,7 +283,7 @@
                 $query.=' 
                         WHERE ('.$tabla.'.nombres LIKE "%'.str_replace(' ', '%', $search).'%"
                         OR '.$tabla.'.apellidos LIKE "%'.str_replace(' ', '%', $search).'%"
-                        OR '.$tabla.'.programa_academico LIKE "%'.str_replace(' ', '%', $search).'%")
+                        OR '.$tabla.'.programa_interes LIKE "%'.str_replace(' ', '%', $search).'%")
                         ';
             }
 
@@ -233,21 +293,32 @@
             $total_data = $statement->rowCount();
             $result = $statement->fetchAll();
             $total_filter_data = $statement->rowCount();
-            $output = '<div class="col-12 col-sm-12"><label class="label label-primary">Item(s): '.$total_data.'</label></div>';
+            $output = '<div class="col s12 text-left" style="margin-top: 1rem;"><span class="badge left left-align">Item(s): '.$total_data.'</span></div>';
             $output.= '<table class="table table-scrollable table-striped table-hover">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th class="text-center" style="width: 50px;">N°</th>
                                         <th class="text-center">Nombre</th>
+                                        <th class="text-center">Identificacion</th>
                                         <th class="text-center">Correo</th>
-                                        <th class="text-center">celular 1</th>
-                                        <th class="text-center">celular 2</th>
-                                        <th class="text-center">programa academico</th>
-                                        <th class="text-center">Evento</th>
-                                        <th class="text-center">Fecha evento</th>
-                                        <th class="text-center">Autorizo envio informacion</th>
-                                        <th class="text-center">observacion</th>
-                                        <th class="text-center">Fecha creacion</th>
+                                        <th class="text-center">Celular 1</th>
+                                        <th class="text-center">Celular 2</th>
+                                        <th class="text-center">Direccion</th>
+                                        <th class="text-center">programa interes</th>
+                                        <th class="text-center">Fecha entrevista</th>
+                                        <th class="text-center">Municipio</th>
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">pago inscrito</th>
+                                        <th class="text-center">Estado documento</th>
+                                        <th class="text-center">Postula confabeca</th>
+                                        <th class="text-center">Fecha envio confabeca</th>
+                                        <th class="text-center">Modalidad pago</th>
+                                        <th class="text-center">Matricula financiera</th>
+                                        <th class="text-center">Matricula academica</th>
+                                        <th class="text-center">Convenio</th>
+                                        <th class="text-center">Como se entero?</th>
+                                        <th class="text-center">Observacion</th>
+                                        <th class="text-center">Fecha Creacion</th>
                                     </tr>
                                 </thead>
                             <tbody>';
@@ -259,16 +330,29 @@
                     $output.='<tr>
                                             <td class="text-center" style="width: 50px;">'.$row['id'].'</td>
                                             <td class="text-left">'.$row['nombres'].' '.$row['apellidos'].'</td>
+                                            <td class="text-left">'.$row['identificacion'].'</td>
                                             <td class="text-left">'.$row['correo'].'</td>
                                             <td class="text-left">'.$row['celular1'].'</td>
                                             <td class="text-left">'.$row['celular2'].'</td>
-                                            <td class="text-left">'.$row['programa_academico'].'</td>
-                                            <td class="text-left">'.$row['evento'].'</td>
-                                            <td class="text-left">'.$row['fecha_evento'].'</td>
-                                            <td class="text-left">'.$row['autorizo_envio_informacion'].'</td>
+                                            <td class="text-left">'.$row['direccion'].'</td>
+                                            <td class="text-left">'.$row['programa_interes'].'</td>
+                                            <td class="text-left">'.$row['fecha_entrevista'].'</td>
+                                            <td class="text-left">'.$row['municipio'].'</td>
+                                            <td class="text-left">'.$row['estado'].'</td>
+                                            <td class="text-left">'.$row['pago_inscrito'].'</td>
+                                            <td class="text-left">'.$row['estado_documento'].'</td>
+                                            <td class="text-left">'.$row['postula_comfabeca'].'</td>
+                                            <td class="text-left">'.$row['fecha_envio_comfabeca'].'</td>
+                                            <td class="text-left">'.$row['modalidad_pago'].'</td>
+                                            <td class="text-left">'.$row['matricula_financiera'].'</td>
+                                            <td class="text-left">'.$row['matricula_academica'].'</td>
+                                            <td class="text-left">'.$row['convenio'].'</td>
+                                            <td class="text-left">'.$row['como_entero'].'</td>
                                             <td class="text-left">'.$row['observacion'].'</td>
+                                            <td class="text-left">'.$row['fecha_creacion'].'</td>
+                                            
                                             <td class="text-center">
-                                                '.$row['fecha_creacion'].'
+                                                
                                             </td>
                                       </tr>
                                      ';
@@ -276,7 +360,6 @@
             } else {
                 $output.='<tr><td colspan="100%" class="text-sm-center">Sin resultados</td></tr>';
             }
-
 
             echo utf8_decode($output);
             break; /* EXPORTAR EXCEL */

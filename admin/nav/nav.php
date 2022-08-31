@@ -3,6 +3,7 @@
     <?php
         $content_nav = '
                     <li><a href="#!">Dashboard</a></li>
+                    <li><a href="'.$link_general.'admin/mod-prospecto/inscritos/">Inscritos</a></li>
                     <li><a href="'.$link_general.'admin/mod-prospecto/interesados/">Interesados</a></li>
                     <li><a href="'.$link_general.'admin/mod-prospecto/eventos/">Eventos</a></li>
                     <li><a href="'.$link_general.'admin/mod-usuario/usuarios/">Usuarios</a></li>
