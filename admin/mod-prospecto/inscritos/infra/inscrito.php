@@ -2,7 +2,7 @@
     session_start();
     require_once '../../../../config.php';
     $opcion = $_POST['opcion'];
-    $tabla = 'Inscrito';
+    $tabla = 'inscrito';
 
 
     if (isset($_SESSION['u_id'])){
@@ -196,7 +196,7 @@
             /* variables (fin) */
 
 
-            $query="SELECT  * FROM ".$tabla."  ";
+            $query=" SELECT * FROM ".$tabla."  ";
             if (!empty($search)){
                 $query.=' 
                         WHERE ('.$tabla.'.nombres LIKE "%'.str_replace(' ', '%', $search).'%"
